@@ -73,14 +73,18 @@
   // https://docs.renovatebot.com/modules/manager/regex/
   regexManagers: [
     {
-      fileMatch: ["(^|/)Dockerfile$", "(^|/)Dockerfile\\.[^/]*$"],
+      "fileMatch": [
+        "(^|/|\\.)([Dd]ocker|[Cc]ontainer)file$",
+        "(^|/)([Dd]ocker|[Cc]ontainer)file[^/]*$"
+      ],
       matchStrings: [
         // example:
         // renovate: datasource=github-releases depName=hashicorp/terraform versioning=hashicorp
         // ENV DEFAULT_TERRAFORM_VERSION=x.x.x
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sENV .*?_VERSION=(?<currentValue>.*)\\s"
+        "renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sENV .*?_VERSION=(?<currentValue>.*)\\s",
       ],
-      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      extractVersionTemplate: '^v(?<version>\\d+\\.\\d+\\.\\d+)',
     },
     {
       fileMatch: [".*go$"],
